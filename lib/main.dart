@@ -26,10 +26,13 @@ class MyApp extends StatelessWidget {
               )
           ),
 
+          //primarySwatch: Colors.red,
+
           // Definindo a cor primária
-          primaryColor: const Color.fromARGB(255, 60, 192, 230),
+          primaryColor: const Color.fromARGB(255, 250, 128, 114),
+
           // Definir a cor background o copor do app
-          scaffoldBackgroundColor: const Color.fromARGB(255, 60, 192, 230),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 250, 128, 128),
           // Retira a linha de elevação de divisão do app
           appBarTheme: const AppBarTheme(
             elevation: 0,

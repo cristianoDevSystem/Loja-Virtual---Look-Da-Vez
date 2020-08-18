@@ -1,20 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_vrtual_flutter/helpers/firebase/validators.dart';
+import 'package:loja_vrtual_flutter/helpers/validators/validators.dart';
 import 'package:loja_vrtual_flutter/models/user_manager/user.dart';
 import 'package:loja_vrtual_flutter/models/user_manager/user_manager.dart';
 import 'package:provider/provider.dart';
 
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
 
   // Recuperando os dados dos campos para salvar no Firebase
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passController = TextEditingController();
 
-  // Definindo a chave global para o validador
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  bool _showPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +43,18 @@ class LoginScreen extends StatelessWidget {
                 TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                    hintText: 'E-mail'
+                    icon: Icon(
+                      Icons.email,
+                      color: Color.fromARGB(100, 0, 0, 0),
+                    ),
+                    labelText: 'E-Mail',
+                    hintText: 'Informe seu E-mail'
                   ),
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
+                  style: const TextStyle(
+                      fontSize: 18
+                  ),
                   validator: (email){
                     if(!emailValid(email)){
                       return 'E-mail inválido';
@@ -53,11 +67,33 @@ class LoginScreen extends StatelessWidget {
                 // Campo senha
                 TextFormField(
                   controller: passController,
-                  decoration: const InputDecoration(
-                    hintText: 'Senha'
+                  decoration: InputDecoration(
+                    icon: Icon(
+                      Icons.lock,
+                      color: const Color.fromARGB(100, 0, 0, 0),
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: (){
+                        setState((){
+                          _showPassword = !_showPassword;
+                        });
+                      },
+                      child: Icon(_showPassword == false ?
+                        Icons.visibility_off
+                        : Icons.visibility,
+                      color: const Color.fromARGB(100, 0, 0, 0),
+                      ),
+                    ),
+                    labelText: 'Senha',
+                    hintText: 'Digite a sua Senha'
                   ),
+                  // ignore: avoid_bool_literals_in_conditional_expressions
+                  obscureText: _showPassword,
                   autocorrect: false,
-                  obscureText: true,
+                  style: const TextStyle(
+                    fontSize: 18
+                  ),
+
                   validator: (pass){
                     if(pass.isEmpty || pass.length < 6){
                       return 'Senha inválida';
@@ -65,6 +101,7 @@ class LoginScreen extends StatelessWidget {
                     return null;
                    },
                   ),
+
 
                 // Botão esqueci a senha
                 Align(
@@ -89,13 +126,19 @@ class LoginScreen extends StatelessWidget {
                       // Verificar se a validação foi válida
                       if(formKey.currentState.validate()){
                         context.read<UserManager>().signIn(
-                          User(
+                          user: User(
                             email: emailController.text,
-                            password: passController.text
-                          )
+                            password: passController.text,
+                          ),
+                          onFail: (e){
+                            print(e);
+                          },
+
+                          onSuccess: () {
+                            print('Sucesso');
+                          }
                         );
                       }
-
                     },
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
