@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_vrtual_flutter/models/user_manager/user_manager.dart';
 import 'package:loja_vrtual_flutter/screens/base/base_screen.dart';
+import 'package:loja_vrtual_flutter/screens/siguup/signup_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (_) => UserManager(),
 
       child: MaterialApp(
@@ -43,7 +44,28 @@ class MyApp extends StatelessWidget {
 
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: BaseScreen(),
+
+        // Página inicial
+        initialRoute: '/base',
+
+        // Recebendo a rota das telas que irá acessar
+        onGenerateRoute: (settings) {
+          switch(settings.name){
+
+            case '/signup' :
+              return MaterialPageRoute(
+                builder: (_) => SignUpScreen()
+              );
+
+            case '/base':
+            default:
+              return MaterialPageRoute(
+                builder: (_) => BaseScreen()
+              );
+
+
+          }
+      },
       ),
     );
   }
