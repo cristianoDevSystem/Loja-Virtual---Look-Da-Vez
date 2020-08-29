@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool _showPassword = false;
+  bool _showPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,27 +93,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passController,
                       enabled: !userManager.loading,
                       decoration: InputDecoration(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.lock,
-                            color: const Color.fromARGB(100, 0, 0, 0),
                           ),
                           suffixIcon: GestureDetector(
                             onTap: (){
                               setState((){
-                                _showPassword = !_showPassword;
+                                _showPasswordVisible = !_showPasswordVisible;
                               });
                             },
-                            child: Icon(_showPassword == false ?
-                            Icons.visibility_off
-                                : Icons.visibility,
-                              color: const Color.fromARGB(100, 0, 0, 0),
+                            child: Icon(_showPasswordVisible == false ?
+                            Icons.visibility_off : Icons.visibility,
                             ),
                           ),
                           labelText: 'Senha',
                           hintText: 'Digite a sua Senha'
                       ),
                       // ignore: avoid_bool_literals_in_conditional_expressions
-                      obscureText: !_showPassword,
+                      obscureText: !_showPasswordVisible,
                       autocorrect: false,
                       style: const TextStyle(
                           fontSize: 18
@@ -189,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             .withAlpha(100),
                         textColor: Colors.white,
                         child: userManager.loading ?
-                        CircularProgressIndicator(
+                        const CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation(
                             Colors.white
                           ),
