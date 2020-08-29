@@ -23,6 +23,7 @@ class SignUpScreen extends StatefulWidget {
       filter: { "#": RegExp(r'[0-9]')}
   );
 
+
   final MaskTextInputFormatter maskDateFormatter = MaskTextInputFormatter(
       mask: '##/##/####');
 
